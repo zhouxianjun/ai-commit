@@ -227,8 +227,8 @@
   },
   "main": "./dist/extension.js",
   "scripts": {
-    "build": "webpack --mode production --devtool hidden-source-map",
-    "compile": "webpack",
+    "build": "tsdown --minify",
+    "compile": "tsdown",
     "compile-tests": "tsc -p . --outDir out",
     "lint": "eslint src --ext ts",
     "package": "vsce package --no-dependencies",
@@ -236,7 +236,7 @@
     "publish": "vsce publish --no-dependencies",
     "test": "node ./out/test/runTest.js",
     "vscode:prepublish": "npm run build",
-    "watch": "webpack --watch",
+    "watch": "tsdown --watch",
     "watch-tests": "tsc -p . -w --outDir out"
   },
   "devDependencies": {
@@ -248,14 +248,11 @@
     "@typescript-eslint/eslint-plugin": "^5.56.0",
     "@typescript-eslint/parser": "^5.56.0",
     "@vscode/test-electron": "^2.3.0",
-    "copy-webpack-plugin": "^14.0.0",
     "eslint": "^8.36.0",
     "glob": "^8.1.0",
     "mocha": "^10.2.0",
-    "ts-loader": "^9.4.2",
-    "typescript": "^4.9.5",
-    "webpack": "^5.76.3",
-    "webpack-cli": "^5.0.1"
+    "tsdown": "^0.21.7",
+    "typescript": "^5.9.3"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",

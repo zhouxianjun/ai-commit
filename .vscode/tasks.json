@@ -10,7 +10,7 @@
         "owner": "typescript",
         "fileLocation": ["relative", "${workspaceFolder}"],
         "pattern": {
-          "regexp": "^ERROR in (.+):(\\d+):(\\d+)$",
+          "regexp": "^\\[(.+):(\\d+):(\\d+)\\]\\s+(.+)$",
           "file": 1,
           "line": 2,
           "column": 3,
@@ -18,8 +18,8 @@
         },
         "background": {
           "activeOnStart": true,
-          "beginsPattern": "Compiler starting",
-          "endsPattern": "Compiler finished"
+          "beginsPattern": "Build start",
+          "endsPattern": "Rebuilt|Build complete"
         }
       },
       "isBackground": true,

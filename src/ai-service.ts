@@ -71,6 +71,7 @@ export async function chatCompletion(messages: ChatMessage[]): Promise<string> {
       clearTimeout(timer);
       pair.provider.afterChatCompletion?.(rawResponse, pair.modelConfig);
 
+      console.info(`use [${pair.label}] success`);
       return pair.provider.extractText(rawResponse);
     } catch (err) {
       const errorMsg = err instanceof Error ? err.message : String(err);

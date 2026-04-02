@@ -14,4 +14,4 @@ export function createProvider(config: ServerConfig): AIProvider {
   }
 }
 
-export { AIProvider, ServerConfig, ModelConfig, ChatMessage } from './types';
+export type { AIProvider, ServerConfig, ModelConfig, ChatMessage } from './types';
