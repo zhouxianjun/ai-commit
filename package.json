@@ -1,34 +1,68 @@
 {
   "name": "ai-commit",
   "displayName": "AI Commit",
-  "description": "Use Azure/OpenAI API to review Git changes, generate conventional commit messages that meet the conventions, simplify the commit process, and keep the commit conventions consistent.",
   "version": "0.1.1",
-  "engines": {
-    "node": ">=16",
-    "vscode": "^1.77.0"
-  },
+  "description": "Use Azure/OpenAI API to review Git changes, generate conventional commit messages that meet the conventions, simplify the commit process, and keep the commit conventions consistent.",
   "categories": [
     "Other"
   ],
   "keywords": [
+    "AI Commit",
+    "Auto Commit",
     "Azure",
-    "OpenAI",
     "ChatGPT",
-    "GitEmoji",
-    "Git Commit",
-    "Conventional Commits",
-    "Commitizen",
     "Commit Message",
     "Commit Message Generator",
-    "AI Commit",
-    "Auto Commit"
+    "Commitizen",
+    "Conventional Commits",
+    "Git Commit",
+    "GitEmoji",
+    "OpenAI"
   ],
-  "publisher": "sitoi",
+  "license": "MIT",
   "repository": "https://github.com/sitoi/ai-commit",
-  "icon": "images/logo.png",
-  "activationEvents": [
-    "onCommand:ai-commit"
-  ],
+  "publisher": "sitoi",
+  "main": "./dist/extension.js",
+  "scripts": {
+    "build": "tsdown --minify",
+    "compile": "tsdown",
+    "compile-tests": "tsc -p . --outDir out",
+    "fmt": "oxfmt",
+    "fmt:check": "oxfmt --check",
+    "lint": "eslint src --ext ts",
+    "package": "vsce package --no-dependencies",
+    "pretest": "npm run compile-tests && npm run compile && npm run lint",
+    "publish": "vsce publish --no-dependencies",
+    "test": "node ./out/test/runTest.js",
+    "vscode:prepublish": "npm run build",
+    "watch": "tsdown --watch",
+    "watch-tests": "tsc -p . -w --outDir out"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "fs-extra": "^11.0.4",
+    "openai": "^6.33.0",
+    "simple-git": "^3.17.0"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/glob": "^8.1.0",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "16.x",
+    "@types/vscode": "^1.77.0",
+    "@typescript-eslint/eslint-plugin": "^5.56.0",
+    "@typescript-eslint/parser": "^5.56.0",
+    "@vscode/test-electron": "^2.3.0",
+    "eslint": "^8.36.0",
+    "glob": "^8.1.0",
+    "mocha": "^10.2.0",
+    "oxfmt": "^0.43.0",
+    "tsdown": "^0.21.7",
+    "typescript": "^5.9.3"
+  },
+  "resolutions": {
+    "@types/node": "16.x"
+  },
   "contributes": {
     "commands": [
       {
@@ -225,43 +259,12 @@
       ]
     }
   },
-  "main": "./dist/extension.js",
-  "scripts": {
-    "build": "tsdown --minify",
-    "compile": "tsdown",
-    "compile-tests": "tsc -p . --outDir out",
-    "lint": "eslint src --ext ts",
-    "package": "vsce package --no-dependencies",
-    "pretest": "npm run compile-tests && npm run compile && npm run lint",
-    "publish": "vsce publish --no-dependencies",
-    "test": "node ./out/test/runTest.js",
-    "vscode:prepublish": "npm run build",
-    "watch": "tsdown --watch",
-    "watch-tests": "tsc -p . -w --outDir out"
-  },
-  "devDependencies": {
-    "@types/fs-extra": "^11.0.4",
-    "@types/glob": "^8.1.0",
-    "@types/mocha": "^10.0.1",
-    "@types/node": "16.x",
-    "@types/vscode": "^1.77.0",
-    "@typescript-eslint/eslint-plugin": "^5.56.0",
-    "@typescript-eslint/parser": "^5.56.0",
-    "@vscode/test-electron": "^2.3.0",
-    "eslint": "^8.36.0",
-    "glob": "^8.1.0",
-    "mocha": "^10.2.0",
-    "tsdown": "^0.21.7",
-    "typescript": "^5.9.3"
-  },
-  "dependencies": {
-    "@google/generative-ai": "^0.24.1",
-    "fs-extra": "^11.0.4",
-    "openai": "^6.33.0",
-    "simple-git": "^3.17.0"
-  },
-  "resolutions": {
-    "@types/node": "16.x"
-  },
-  "license": "MIT"
+  "activationEvents": [
+    "onCommand:ai-commit"
+  ],
+  "icon": "images/logo.png",
+  "engines": {
+    "node": ">=16",
+    "vscode": "^1.77.0"
+  }
 }

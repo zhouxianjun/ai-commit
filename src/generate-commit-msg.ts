@@ -82,10 +82,7 @@ export async function generateCommitMsg(arg) {
         ? 'Analyzing changes with additional context...'
         : 'Analyzing changes...'
     });
-    const messages = await generateCommitMessageChatCompletionPrompt(
-      diff,
-      additionalContext
-    );
+    const messages = await generateCommitMessageChatCompletionPrompt(diff, additionalContext);
 
     progress.report({
       message: additionalContext

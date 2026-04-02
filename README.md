@@ -59,13 +59,13 @@ Use OpenAI / Azure OpenAI / DeepSeek / Gemini API to review Git changes, generat
 
 In the VSCode settings, locate the "ai-commit" configuration options and configure them as needed:
 
-| Configuration          |  Type  |      Default      | Required |                                                                      Notes                                                                      |
-| :--------------------- | :----: | :---------------: | :------: | :---------------------------------------------------------------------------------------------------------------------------------------------: |
-| servers                | array  |        []         |   Yes    | AI server list. Each entry: `{ type, baseURL?, apiKey, apiVersion?, timeout?, models: [{ name, temperature? }] }`. Tried in order on failure.  |
-| timeout                | number |      60000        |    No    |                                Global default timeout (ms). Per-server `timeout` overrides this.                                               |
-| temperature            | number |       0.7         |    No    |                           Global default temperature (0-2). Per-model `temperature` overrides this.                                            |
-| AI_COMMIT_LANGUAGE     | string |     English       |   Yes    |                                                              Supports 19 languages                                                              |
-| SYSTEM_PROMPT          | string |       None        |    No    |                                                              Custom system prompt                                                               |
+| Configuration      |  Type  | Default | Required |                                                                     Notes                                                                     |
+| :----------------- | :----: | :-----: | :------: | :-------------------------------------------------------------------------------------------------------------------------------------------: |
+| servers            | array  |   []    |   Yes    | AI server list. Each entry: `{ type, baseURL?, apiKey, apiVersion?, timeout?, models: [{ name, temperature? }] }`. Tried in order on failure. |
+| timeout            | number |  60000  |    No    |                                       Global default timeout (ms). Per-server `timeout` overrides this.                                       |
+| temperature        | number |   0.7   |    No    |                                   Global default temperature (0-2). Per-model `temperature` overrides this.                                   |
+| AI_COMMIT_LANGUAGE | string | English |   Yes    |                                                             Supports 19 languages                                                             |
+| SYSTEM_PROMPT      | string |  None   |    No    |                                                             Custom system prompt                                                              |
 
 **Server configuration example:**
 
@@ -77,10 +77,7 @@ In the VSCode settings, locate the "ai-commit" configuration options and configu
       "baseURL": "https://api.openai.com/v1",
       "apiKey": "sk-xxx",
       "timeout": 30000,
-      "models": [
-        { "name": "gpt-4o", "temperature": 0.5 },
-        { "name": "gpt-4o-mini" }
-      ]
+      "models": [{ "name": "gpt-4o", "temperature": 0.5 }, { "name": "gpt-4o-mini" }]
     },
     {
       "type": "azure",

@@ -29,10 +29,7 @@ export async function activate(context: vscode.ExtensionContext) {
       );
 
       if (result === 'Yes') {
-        await vscode.commands.executeCommand(
-          'workbench.action.openSettings',
-          'ai-commit.servers'
-        );
+        await vscode.commands.executeCommand('workbench.action.openSettings', 'ai-commit.servers');
       }
     }
   } catch (error) {

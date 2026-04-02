@@ -59,13 +59,13 @@
 
 在 `VSCode` 设置中，找到 "ai-commit" 配置项，并根据需要进行配置
 
-| 配置                 |  类型  |   默认   | 必要 |                                                                      备注                                                                       |
-| :------------------- | :----: | :------: | :--: | :---------------------------------------------------------------------------------------------------------------------------------------------: |
-| servers              | array  |    []    |  是  | AI 服务器列表。每项：`{ type, baseURL?, apiKey, apiVersion?, timeout?, models: [{ name, temperature? }] }`。按顺序尝试，失败自动切换下一个。   |
-| timeout              | number |  60000   |  否  |                               全局默认超时时间（ms）。单个 server 的 `timeout` 会覆盖此值。                                                    |
-| temperature          | number |   0.7    |  否  |                            全局默认温度（0-2）。单个 model 的 `temperature` 会覆盖此值。                                                       |
-| AI_COMMIT_LANGUAGE   | string | English  |  是  |                                                              支持 19 种语言                                                                     |
-| SYSTEM_PROMPT        | string |   None   |  否  |                                                              自定义系统提示词                                                                    |
+| 配置               |  类型  |  默认   | 必要 |                                                                     备注                                                                     |
+| :----------------- | :----: | :-----: | :--: | :------------------------------------------------------------------------------------------------------------------------------------------: |
+| servers            | array  |   []    |  是  | AI 服务器列表。每项：`{ type, baseURL?, apiKey, apiVersion?, timeout?, models: [{ name, temperature? }] }`。按顺序尝试，失败自动切换下一个。 |
+| timeout            | number |  60000  |  否  |                                        全局默认超时时间（ms）。单个 server 的 `timeout` 会覆盖此值。                                         |
+| temperature        | number |   0.7   |  否  |                                        全局默认温度（0-2）。单个 model 的 `temperature` 会覆盖此值。                                         |
+| AI_COMMIT_LANGUAGE | string | English |  是  |                                                                支持 19 种语言                                                                |
+| SYSTEM_PROMPT      | string |  None   |  否  |                                                               自定义系统提示词                                                               |
 
 **服务器配置示例：**
 
@@ -77,10 +77,7 @@
       "baseURL": "https://api.openai.com/v1",
       "apiKey": "sk-xxx",
       "timeout": 30000,
-      "models": [
-        { "name": "gpt-4o", "temperature": 0.5 },
-        { "name": "gpt-4o-mini" }
-      ]
+      "models": [{ "name": "gpt-4o", "temperature": 0.5 }, { "name": "gpt-4o-mini" }]
     },
     {
       "type": "azure",

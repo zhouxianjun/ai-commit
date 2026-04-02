@@ -4,12 +4,9 @@ import * as vscode from 'vscode';
 /**
  * Retrieves the staged changes from the Git repository.
  */
-export async function getDiffStaged(
-  repo: any
-): Promise<{ diff: string; error?: string }> {
+export async function getDiffStaged(repo: any): Promise<{ diff: string; error?: string }> {
   try {
-    const rootPath =
-      repo?.rootUri?.fsPath || vscode.workspace.workspaceFolders?.[0].uri.fsPath;
+    const rootPath = repo?.rootUri?.fsPath || vscode.workspace.workspaceFolders?.[0].uri.fsPath;
 
     if (!rootPath) {
       throw new Error('No workspace folder found');

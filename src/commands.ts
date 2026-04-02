@@ -30,10 +30,7 @@ export class CommandManager {
         if (result === 'Retry') {
           await handler(...args);
         } else if (result === 'Configure') {
-          await vscode.commands.executeCommand(
-            'workbench.action.openSettings',
-            'ai-commit'
-          );
+          await vscode.commands.executeCommand('workbench.action.openSettings', 'ai-commit');
         }
       }
     });

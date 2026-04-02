@@ -10,8 +10,8 @@ export default defineConfig({
   clean: true,
   shims: true,
   deps: {
-    neverBundle: ['vscode'],
+    neverBundle: ['vscode']
   },
   copy: ['prompt'],
-  outExtensions: () => ({ js: '.js', map: '.map' }),
+  outExtensions: () => ({ js: '.js', map: '.map' })
 });

@@ -11,14 +11,13 @@ interface ServerModelPair {
 
 export function buildServerModelPairs(): ServerModelPair[] {
   const configManager = ConfigurationManager.getInstance();
-  const servers = configManager.getConfig<ServerConfig[]>(
-    ConfigKeys.SERVERS,
-    []
-  );
+  const servers = configManager.getConfig<ServerConfig[]>(ConfigKeys.SERVERS, []);
   const globalTimeout = configManager.getConfig<number>(ConfigKeys.TIMEOUT, 60000);
   const globalTemperature = configManager.getConfig<number>(ConfigKeys.TEMPERATURE, 0.7);
   const globalMaxTokens = configManager.getConfig<number | undefined>(ConfigKeys.MAX_TOKENS);
-  const globalReasoningEffort = configManager.getConfig<ServerConfig['models'][number]['reasoningEffort']>(ConfigKeys.REASONING_EFFORT, 'low');
+  const globalReasoningEffort = configManager.getConfig<
+    ServerConfig['models'][number]['reasoningEffort']
+  >(ConfigKeys.REASONING_EFFORT, 'low');
 
   const pairs: ServerModelPair[] = [];
 
@@ -62,7 +61,8 @@ export async function chatCompletion(messages: ChatMessage[]): Promise<string> {
       const controller = new AbortController();
       const timer = setTimeout(() => controller.abort(), pair.timeout);
 
-      const processMessages = pair.provider.beforeChatCompletion?.(messages, pair.modelConfig) ?? messages;
+      const processMessages =
+        pair.provider.beforeChatCompletion?.(messages, pair.modelConfig) ?? messages;
       rawResponse = await pair.provider.chatCompletion(
         processMessages,
         pair.modelConfig,
@@ -83,9 +83,7 @@ export async function chatCompletion(messages: ChatMessage[]): Promise<string> {
     }
   }
 
-  throw new Error(
-    `All ${pairs.length} server(s) failed:\n${errors.join('\n')}`
-  );
+  throw new Error(`All ${pairs.length} server(s) failed:\n${errors.join('\n')}`);
 }
 
-const parseMaxToken = (maxToken?: number) => maxToken && maxToken > 0 ? maxToken : undefined;
+const parseMaxToken = (maxToken?: number) => (maxToken && maxToken > 0 ? maxToken : undefined);

@@ -8,15 +8,15 @@ VS Code extension that generates AI-powered conventional commit messages from st
 
 ## Build / Lint / Test Commands
 
-| Command | Purpose |
-|---------|---------|
-| `pnpm install` | Install dependencies |
-| `pnpm run build` | Production build via webpack |
-| `pnpm run compile` | Dev build via webpack |
-| `pnpm run watch` | Watch mode for development |
-| `pnpm run lint` | ESLint on `src/` TypeScript files |
-| `pnpm run package` | Create `.vsix` package (vsce) |
-| `pnpm run publish` | Publish to VS Code Marketplace |
+| Command            | Purpose                           |
+| ------------------ | --------------------------------- |
+| `pnpm install`     | Install dependencies              |
+| `pnpm run build`   | Production build via webpack      |
+| `pnpm run compile` | Dev build via webpack             |
+| `pnpm run watch`   | Watch mode for development        |
+| `pnpm run lint`    | ESLint on `src/` TypeScript files |
+| `pnpm run package` | Create `.vsix` package (vsce)     |
+| `pnpm run publish` | Publish to VS Code Marketplace    |
 
 **Testing:** Test infrastructure is scaffolded (Mocha + `@vscode/test-electron`) but no test files currently exist. When tests are added:
 
@@ -50,6 +50,7 @@ prompt/
 ```
 
 **Key patterns:**
+
 - `ConfigurationManager` is a singleton for reading VS Code settings
 - `CommandManager` handles VS Code command registration/disposal
 - `providers/` uses interface + factory pattern for extensibility (see below)
@@ -72,19 +73,26 @@ No changes needed to `ai-service.ts` or `generate-commit-msg.ts`.
 
 ## Code Style
 
-### Formatting (Prettier)
+### Formatting (oxfmt)
 
-Configured in `.prettierrc`:
+Configured in `.oxfmtrc.json`:
+
 - **88** character line width
 - **Semicolons** required
 - **Single quotes** for strings
 - **No trailing commas**
 
-Prettier is not in `devDependencies` — rely on editor integration or format manually.
+Scripts:
+
+- `pnpm run fmt` — format all files
+- `pnpm run fmt:check` — check formatting without modifying
+
+VS Code extension: install `oxc.oxc-vscode` and set `"editor.defaultFormatter": "oxc.oxc-vscode"`.
 
 ### Linting (ESLint)
 
 Configured in `.eslintrc.json`:
+
 - `@typescript-eslint/semi`: warn — semicolons required
 - `curly`: warn — always use braces for control flow
 - `eqeqeq`: warn — use `===` / `!==`, never `==` / `!=`
@@ -128,11 +136,18 @@ Import order: VS Code API first, then local modules, then external packages.
 ### Error Handling
 
 1. **Catch and rethrow with logging:**
+
    ```typescript
-   try { /* ... */ } catch (error) { console.error('msg:', error); throw error; }
+   try {
+     /* ... */
+   } catch (error) {
+     console.error('msg:', error);
+     throw error;
+   }
    ```
 
 2. **Catch and return error object:**
+
    ```typescript
    } catch (error) { return { diff: '', error: error.message }; }
    ```
