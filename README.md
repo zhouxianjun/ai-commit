@@ -59,19 +59,44 @@ Use OpenAI / Azure OpenAI / DeepSeek / Gemini API to review Git changes, generat
 
 In the VSCode settings, locate the "ai-commit" configuration options and configure them as needed:
 
-| Configuration      |  Type  |       Default        | Required |                                                       Notes                                                        |
-| :----------------- | :----: | :------------------: | :------: | :----------------------------------------------------------------------------------------------------------------: |
-| AI_PROVIDER        | string |        openai        |   Yes    |                                     Select AI Provider: `openai` or `gemini`.                                      |
-| OPENAI_API_KEY     | string |         None         |   Yes    |    Required when `AI Provider` is set to `OpenAI`. [OpenAI token](https://platform.openai.com/account/api-keys)    |
-| OPENAI_BASE_URL    | string |         None         |    No    |                If using Azure, use: https://{resource}.openai.azure.com/openai/deployments/{model}                 |
-| OPENAI_MODEL       | string |        gpt-4o        |   Yes    |      OpenAI MODEL, you can select a model from the list by running the `Show Available OpenAI Models` command      |
-| AZURE_API_VERSION  | string |         None         |    No    |                                                 AZURE_API_VERSION                                                  |
-| OPENAI_TEMPERATURE | number |         0.7          |    No    |      Controls randomness in the output. Range: 0-2. Lower values: more focused, Higher values: more creative       |
-| GEMINI_API_KEY     | string |         None         |   Yes    |     Required when `AI Provider` is set to `Gemini`. [Gemini API key](https://makersuite.google.com/app/apikey)     |
-| GEMINI_MODEL       | string | gemini-2.0-flash-001 |   Yes    |                       Gemini MODEL. Currently, model selection is limited to configuration.                        |
-| GEMINI_TEMPERATURE | number |         0.7          |    No    | Controls randomness in the output. Range: 0-2 for Gemini. Lower values: more focused, Higher values: more creative |
-| AI_COMMIT_LANGUAGE | string |          en          |   Yes    |                                               Supports 19 languages                                                |
-| SYSTEM_PROMPT      | string |         None         |    No    |                                                Custom system prompt                                                |
+| Configuration          |  Type  |      Default      | Required |                                                                      Notes                                                                      |
+| :--------------------- | :----: | :---------------: | :------: | :---------------------------------------------------------------------------------------------------------------------------------------------: |
+| servers                | array  |        []         |   Yes    | AI server list. Each entry: `{ type, baseURL?, apiKey, apiVersion?, timeout?, models: [{ name, temperature? }] }`. Tried in order on failure.  |
+| timeout                | number |      60000        |    No    |                                Global default timeout (ms). Per-server `timeout` overrides this.                                               |
+| temperature            | number |       0.7         |    No    |                           Global default temperature (0-2). Per-model `temperature` overrides this.                                            |
+| AI_COMMIT_LANGUAGE     | string |     English       |   Yes    |                                                              Supports 19 languages                                                              |
+| SYSTEM_PROMPT          | string |       None        |    No    |                                                              Custom system prompt                                                               |
+
+**Server configuration example:**
+
+```json
+{
+  "ai-commit.servers": [
+    {
+      "type": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "sk-xxx",
+      "timeout": 30000,
+      "models": [
+        { "name": "gpt-4o", "temperature": 0.5 },
+        { "name": "gpt-4o-mini" }
+      ]
+    },
+    {
+      "type": "azure",
+      "baseURL": "https://xxx.openai.azure.com",
+      "apiKey": "xxx",
+      "apiVersion": "2024-02-15-preview",
+      "models": [{ "name": "gpt-4" }]
+    },
+    {
+      "type": "gemini",
+      "apiKey": "xxx",
+      "models": [{ "name": "gemini-2.0-flash" }]
+    }
+  ]
+}
+```
 
 ## ⌨️ Local Development
 
@@ -84,7 +109,7 @@ Alternatively, you can clone the repository and run the following commands for l
 ```bash
 $ git clone https://github.com/sitoi/ai-commit.git
 $ cd ai-commit
-$ npm install
+$ pnpm install
 ```
 
 Open the project folder in VSCode. Press F5 to run the project. This will open a new Extension Development Host window and launch the plugin within it.

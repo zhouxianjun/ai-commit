@@ -1,6 +1,5 @@
 import * as vscode from 'vscode';
 import { generateCommitMsg } from './generate-commit-msg';
-import { ConfigurationManager } from './config';
 
 /**
  * Manages the registration and disposal of commands.
@@ -15,41 +14,6 @@ export class CommandManager {
     this.registerCommand('extension.configure-ai-commit', () =>
       vscode.commands.executeCommand('workbench.action.openSettings', 'ai-commit')
     );
-
-    // Show available OpenAI models
-    this.registerCommand('ai-commit.showAvailableModels', async () => {
-      const configManager = ConfigurationManager.getInstance();
-      const models = await configManager.getAvailableOpenAIModels();
-      const selected = await vscode.window.showQuickPick(models, {
-        placeHolder: 'Please select a model'
-      });
-      
-      if (selected) {
-        const config = vscode.workspace.getConfiguration('ai-commit');
-        await config.update('OPENAI_MODEL', selected, vscode.ConfigurationTarget.Global);
-      }
-    });
-
-    /**
-     * @deprecated
-     * This function is deprecated because Gemini API does not currently support listing models via API.
-     * 
-     * Show available Gemini models
-     */
-    /*
-    this.registerCommand('ai-commit.showAvailableGeminiModels', async () => {
-      const configManager = ConfigurationManager.getInstance();
-      const models = await configManager.getAvailableGeminiModels(); // Use the updated function
-      const selected = await vscode.window.showQuickPick(models, {
-        placeHolder: 'Please select a Gemini model'
-      });
-
-      if (selected) {
-        const config = vscode.workspace.getConfiguration('ai-commit');
-        await config.update('GEMINI_MODEL', selected, vscode.ConfigurationTarget.Global);
-      }
-    });
-    */
   }
 
   private registerCommand(command: string, handler: (...args: any[]) => any) {

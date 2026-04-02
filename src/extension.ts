@@ -1,15 +1,14 @@
 import * as vscode from 'vscode';
 import { CommandManager } from './commands';
-import { ConfigurationManager } from './config';
+import { ConfigKeys, ConfigurationManager } from './config';
+import { ServerConfig } from './providers/types';
 
 /**
  * Activates the extension and registers commands.
- *
- * @param {vscode.ExtensionContext} context - The context for the extension.
  */
 export async function activate(context: vscode.ExtensionContext) {
   try {
-    const configManager = ConfigurationManager.getInstance(context);
+    const configManager = ConfigurationManager.getInstance();
 
     const commandManager = new CommandManager(context);
     commandManager.registerCommands();
@@ -21,10 +20,10 @@ export async function activate(context: vscode.ExtensionContext) {
       }
     });
 
-    const apiKey = configManager.getConfig<string>('OPENAI_API_KEY');
-    if (!apiKey) {
+    const servers = configManager.getConfig<ServerConfig[]>(ConfigKeys.SERVERS, []);
+    if (!servers || servers.length === 0) {
       const result = await vscode.window.showWarningMessage(
-        'OpenAI API Key not configured. Would you like to configure it now?',
+        'No AI servers configured. Would you like to configure them now?',
         'Yes',
         'No'
       );
@@ -32,7 +31,7 @@ export async function activate(context: vscode.ExtensionContext) {
       if (result === 'Yes') {
         await vscode.commands.executeCommand(
           'workbench.action.openSettings',
-          'ai-commit.OPENAI_API_KEY'
+          'ai-commit.servers'
         );
       }
     }
@@ -44,6 +43,5 @@ export async function activate(context: vscode.ExtensionContext) {
 
 /**
  * Deactivates the extension.
- * This function is called when the extension is deactivated.
  */
 export function deactivate() {}

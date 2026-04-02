@@ -59,19 +59,44 @@
 
 在 `VSCode` 设置中，找到 "ai-commit" 配置项，并根据需要进行配置
 
-| 配置               |  类型  |         默认         | 必要 |                                              备注                                               |
-| :----------------- | :----: | :------------------: | :--: | :---------------------------------------------------------------------------------------------: |
-| AI_PROVIDER        | string |        openai        | Yes  |                            Select AI Provider: `openai` or `gemini`.                            |
-| OPENAI_API_KEY     | string |         None         |  是  |                   [OpenAI 令牌](https://platform.openai.com/account/api-keys)                   |
-| OPENAI_BASE_URL    | string |         None         |  否  |       如果是 Azure，使用：https://{resource}.openai.azure.com/openai/deployments/{model}        |
-| OPENAI_MODEL       | string |        gpt-4o        |  是  |     OpenAI MODEL, 你可以通过运行 `Show Available OpenAI Models` 命令从列表中选择一个模型。      |
-| AZURE_API_VERSION  | string |         None         |  否  |                                        AZURE_API_VERSION                                        |
-| OPENAI_TEMPERATURE | number |         0.7          |  否  |              控制输出的随机性。范围：0-2。较低的值：更加集中，较高的值：更有创造性              |
-| GEMINI_API_KEY     | string |         None         | Yes  | 将`AI Provider`设置为`Gemini`时需要。[Gemini API key](https://makersuite.google.com/app/apikey) |
-| GEMINI_MODEL       | string | gemini-2.0-flash-001 | Yes  |                               模型选择仅限于配 Gemini 模型。置。                                |
-| GEMINI_TEMPERATURE | number |         0.7          |  No  |          `Gemini` 控制输出的随机性。范围：0-2。较低的值：更加集中，较高的值：更有创造           |
-| AI_COMMIT_LANGUAGE | string |          en          |  是  |                                         支持 19 种语言                                          |
-| SYSTEM_PROMPT      | string |         None         |  否  |                                        自定义系统提示词                                         |
+| 配置                 |  类型  |   默认   | 必要 |                                                                      备注                                                                       |
+| :------------------- | :----: | :------: | :--: | :---------------------------------------------------------------------------------------------------------------------------------------------: |
+| servers              | array  |    []    |  是  | AI 服务器列表。每项：`{ type, baseURL?, apiKey, apiVersion?, timeout?, models: [{ name, temperature? }] }`。按顺序尝试，失败自动切换下一个。   |
+| timeout              | number |  60000   |  否  |                               全局默认超时时间（ms）。单个 server 的 `timeout` 会覆盖此值。                                                    |
+| temperature          | number |   0.7    |  否  |                            全局默认温度（0-2）。单个 model 的 `temperature` 会覆盖此值。                                                       |
+| AI_COMMIT_LANGUAGE   | string | English  |  是  |                                                              支持 19 种语言                                                                     |
+| SYSTEM_PROMPT        | string |   None   |  否  |                                                              自定义系统提示词                                                                    |
+
+**服务器配置示例：**
+
+```json
+{
+  "ai-commit.servers": [
+    {
+      "type": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "sk-xxx",
+      "timeout": 30000,
+      "models": [
+        { "name": "gpt-4o", "temperature": 0.5 },
+        { "name": "gpt-4o-mini" }
+      ]
+    },
+    {
+      "type": "azure",
+      "baseURL": "https://xxx.openai.azure.com",
+      "apiKey": "xxx",
+      "apiVersion": "2024-02-15-preview",
+      "models": [{ "name": "gpt-4" }]
+    },
+    {
+      "type": "gemini",
+      "apiKey": "xxx",
+      "models": [{ "name": "gemini-2.0-flash" }]
+    }
+  ]
+}
+```
 
 ## ⌨️ 本地开发
 
@@ -84,7 +109,7 @@
 ```bash
 $ git clone https://github.com/sitoi/ai-commit.git
 $ cd ai-commit
-$ npm install
+$ pnpm install
 ```
 
 在 VSCode 中打开项目文件夹。按 F5 键运行项目。会弹出一个新的 Extension Development Host 窗口，并在其中启动插件。
